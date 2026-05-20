@@ -78,6 +78,60 @@ def fix_db():
     except Exception as e:
         print(f"⚠️ Fix DB Error: {e}")
 
+# --- Seed Dummy Data ---
+def seed_dummy_data():
+    """डेमो के लिए कुछ डमी छात्र और फीस रिकॉर्ड बनाने के लिए"""
+    student_db = database.SessionLocalStudent()
+    try:
+        # क्या पहले से कोई छात्र है? अगर है, तो कुछ न करें।
+        first_student = student_db.query(models.Student).first()
+        if first_student:
+            print("✅ Dummy data already exists. Skipping seeding.")
+            return
+
+        print("🌱 Seeding dummy student and fee data for demo...")
+
+        # कुछ डमी छात्र बनाएं (मान लें कि class_id=10 'Class 10' के लिए है)
+        dummy_students_data = [
+            {
+                "admission_no": "2025001", "roll_no": "1", "first_name": "Rahul", "last_name": "Verma",
+                "father_name": "Ramesh Verma", "mother_name": "Sunita Verma", "dob": "2009-05-10",
+                "gender": "Male", "category": "General", "mobile_no": "9876543210", "class_id": 10, "section": "A",
+                "is_active": True, "address": "123, Azad Nagar, Nainpur"
+            },
+            {
+                "admission_no": "2025002", "roll_no": "2", "first_name": "Priya", "last_name": "Sharma",
+                "father_name": "Suresh Sharma", "mother_name": "Anita Sharma", "dob": "2009-08-22",
+                "gender": "Female", "category": "OBC", "mobile_no": "9876543211", "class_id": 10, "section": "A",
+                "is_active": True, "address": "456, Gandhi Ward, Nainpur"
+            },
+            {
+                "admission_no": "2025003", "roll_no": "3", "first_name": "Amit", "last_name": "Patel",
+                "father_name": "Dinesh Patel", "mother_name": "Rekha Patel", "dob": "2009-01-15",
+                "gender": "Male", "category": "General", "mobile_no": "9876543212", "class_id": 9, "section": "B",
+                "is_active": True, "address": "789, Subhash Ward, Nainpur"
+            }
+        ]
+
+        for student_data in dummy_students_data:
+            new_student = models.Student(**student_data)
+            student_db.add(new_student)
+            student_db.commit()
+            student_db.refresh(new_student)
+
+            # हर छात्र के लिए एक फीस रिकॉर्ड बनाएं
+            fee_record = models.FeeRecord(student_id=new_student.id, monthly_fee=1200, total_monthly_payable=12000, total_paid=3600, balance=8400)
+            student_db.add(fee_record)
+            student_db.commit()
+        
+        print("✅ Dummy data seeded successfully.")
+
+    except Exception as e:
+        print(f"⚠️ Error seeding dummy data: {e}")
+        student_db.rollback()
+    finally:
+        student_db.close()
+
 # --- Initialize Admin User ---
 def init_admin():
     """डिफ़ॉल्ट एडमिन यूज़र बनाने के लिए"""
@@ -121,6 +175,7 @@ models.StudentBase.metadata.create_all(bind=database.student_engine)
 models.MgmtBase.metadata.create_all(bind=database.mgmt_engine)
 fix_db()
 init_admin()
+seed_dummy_data()
 
 # --- Include Routers ---
 app.include_router(classes.router) # <-- राउटर को ऐप में जोड़ें
