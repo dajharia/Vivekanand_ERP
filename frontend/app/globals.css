@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables for theming */
+/* These are the default (light mode) values */
+:root {
+  --color-primary: #4318FF;
+  --color-primary-light: #8B72FF;
+
+  --color-heading: #1B2559;
+  --color-text-default: #A3AED0;
+  --color-text-secondary: #A3AED0;
+
+  --color-background-light: #F4F7FE;
+  --color-background-dark: #1E293B;
+  --color-background-darker: #131620;
+
+  --color-border-light: #E9EDF7;
+  --color-border-dark: #2B3041;
+
+  --color-info: #0095FF;
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-danger: #EF4444;
+}
+
+/* Dark mode values, applied when the 'dark' class is present on a parent element */
+.dark {
+  --color-primary: #8B72FF; /* primary.light becomes primary in dark mode */
+  --color-heading: #E2E8F0; /* heading.dark becomes heading in dark mode */
+  --color-text-default: #94A3B8; /* text.dark becomes text-default in dark mode */
+  --color-text-secondary: #94A3B8; /* text.dark becomes text-secondary in dark mode */
+  --color-background-light: #1E293B; /* background.dark becomes background-light in dark mode */
+  --color-background-dark: #1E293B;
+  --color-background-darker: #131620;
+  --color-border-light: #2B3041; /* border.dark becomes border-light in dark mode */
+  --color-border-dark: #2B3041;
+}

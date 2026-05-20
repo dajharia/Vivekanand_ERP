@@ -1,0 +1,29 @@
+# General
+.DS_Store
+*.log
+*.zip
+*.bak
+
+# Python / FastAPI Backend (in backend/ folder)
+backend/__pycache__/
+backend/*.pyc
+backend/venv/
+backend/env/
+backend/.env
+backend/instance/
+
+# Database files (It's generally not recommended to track database files)
+backend/*.db
+
+# Node.js / Next.js Frontend (in frontend/ folder)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/bun.lockb
