@@ -27,8 +27,8 @@ export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // --- Admin Profile & Auth State ---
-  const [userRole, setUserRole] = useState('guest'); 
-  const [loggedInUsername, setLoggedInUsername] = useState('');
+  const [userRole, setUserRole] = useState('super_admin'); // Demo के लिए login bypass
+  const [loggedInUsername, setLoggedInUsername] = useState('Admin'); // Demo के लिए login bypass
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [adminPhoto, setAdminPhoto] = useState(null);
   const fileInputRef = useRef(null);
