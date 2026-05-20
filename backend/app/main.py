@@ -78,6 +78,23 @@ def fix_db():
     except Exception as e:
         print(f"⚠️ Fix DB Error: {e}")
 
+# --- Initialize Admin User ---
+def init_admin():
+    """डिफ़ॉल्ट एडमिन यूज़र बनाने के लिए"""
+    db = database.SessionLocalMgmt()
+    try:
+        # चेक करें कि 'admin' यूज़र पहले से है या नहीं
+        user = db.query(models.User).filter(models.User.username == "admin").first()
+        if not user:
+            new_admin = models.User(username="admin", password="password", role="admin")
+            db.add(new_admin)
+            db.commit()
+            print("✅ Default admin user 'admin' created successfully.")
+    except Exception as e:
+        print(f"⚠️ Admin Creation Error: {e}")
+    finally:
+        db.close()
+
 # --- Middleware & Static Files ---
 os.makedirs(STATIC_PATH, exist_ok=True)
 
@@ -103,6 +120,7 @@ app.add_middleware(
 models.StudentBase.metadata.create_all(bind=database.student_engine)
 models.MgmtBase.metadata.create_all(bind=database.mgmt_engine)
 fix_db()
+init_admin()
 
 # --- Include Routers ---
 app.include_router(classes.router) # <-- राउटर को ऐप में जोड़ें
